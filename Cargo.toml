@@ -1,0 +1,15 @@
+[package]
+name = "aoc-2020"
+version = "0.1.0"
+authors = ["Yanis Guaye <yguaye44@gmail.com>"]
+edition = "2018"
+license = "MIT"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+aoc-runner = "~0.3.0"
+aoc-runner-derive = "~0.3.0"
+itertools = "~0.9.0"
+lazy_static = "^1.4.0"
+regex = "^1.4.2"

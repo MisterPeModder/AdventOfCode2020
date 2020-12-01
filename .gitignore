@@ -1,0 +1,13 @@
+/target
+**/*.rs.bk
+input
+
+# Ignore day outputs
+output_day*
+
+#Added by cargo
+#
+#already existing elements are commented out
+
+#/target
+#**/*.rs.bk
