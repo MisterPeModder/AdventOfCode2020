@@ -1,42 +1,61 @@
+use std::collections::HashSet;
+
 #[aoc_generator(day01)]
-pub fn day01_gen(input: &str) -> Vec<i32> {
+pub fn day01_gen(input: &str) -> HashSet<u32> {
     input.lines().map(|l| l.parse().expect("not an int")).collect()
 }
 
-#[aoc(day01, part1)]
-pub fn day01_part1(input: &[i32]) -> i32 {
-    let len = input.len();
+const TARGET_SUM: u32 = 2020;
 
-    if len < 2 {
-        0
+fn get_matching_entry(sum: u32, m: u32, entries: &HashSet<u32>) -> Option<u32> {
+    if m > sum {
+        return None;
+    }
+    let n = sum - m;
+
+    if m == n {
+        None
     } else {
-        for (i, &n1) in input[..len - 1].iter().enumerate() {
-            for &n2 in input[i + 1..].iter() {
-                if n1 + n2 == 2020 {
-                    return n1 * n2;
-                }
-            }
-        }
-        0
+        entries.get(&n).map(|_| n)
     }
 }
 
-#[aoc(day01, part2)]
-pub fn day01_part2(input: &[i32]) -> i32 {
-    let len = input.len();
+#[inline]
+fn get_matching_pair(sum: u32, entries: &HashSet<u32>) -> Option<(u32, u32)> {
+    entries.iter().find_map(|&m| get_matching_entry(sum, m, entries).map(|n| (m, n)))
+}
 
-    if len < 3 {
-        0
-    } else {
-        for (i, &n1) in input[..len - 2].iter().enumerate() {
-            for &n2 in input[i + 1..].iter() {
-                for &n3 in input[i + 2..].iter() {
-                    if n1 + n2 + n3 == 2020 {
-                        return n1 * n2 * n3;
-                    }
-                }
+fn get_matching_triple(sum: u32, entries: &HashSet<u32>) -> Option<(u32, u32, u32)> {
+    entries
+        .iter()
+        .filter_map(|&m| if m > sum {
+            None
+        } else {
+            let n_o = sum - m;
+
+            if m == n_o {
+                None
+            } else {
+                Some((m, n_o))
             }
-        }
-        0
-    }
+        })
+        .find_map(|(m, n_o)| get_matching_pair(n_o, entries)
+            .map(|(n, o)| (m, n, o)))
+}
+
+#[aoc(day01, part1)]
+pub fn day01_part1(input: &HashSet<u32>) -> u32 {
+    let (m, n) = get_matching_pair(TARGET_SUM, input)
+        .expect("cannot find matching pair");
+
+    m * n
+}
+
+#[aoc(day01, part2)]
+pub fn day01_part2(input: &HashSet<u32>) -> u32 {
+    let (m, n, o) = get_matching_triple(TARGET_SUM, input)
+        .expect("cannot find matching triple");
+
+
+    m * n * o
 }
