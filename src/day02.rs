@@ -52,7 +52,7 @@ pub fn day02_gen(input: &str) -> Vec<Password> {
             Some(Password::new(
                 caps[1].parse().ok()?,
                 caps[2].parse().ok()?,
-                caps[3].chars().nth(0).unwrap(),
+                caps[3].chars().next().unwrap(),
                 &caps[4],
             ))
         })
