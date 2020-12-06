@@ -1,7 +1,4 @@
-use std::{
-    iter,
-    str::FromStr,
-};
+use std::{iter, str::FromStr};
 
 pub struct Map {
     data: Vec<u8>,
@@ -33,14 +30,21 @@ impl FromStr for Map {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let mut lines = s.lines().peekable();
         let width = lines.peek().copied().unwrap_or("").as_bytes().len();
-        let data: Vec<u8> = lines.flat_map(|l| l
-                .bytes()
-                .chain(iter::repeat(b'.'))
-                .take(width)
-                .map(|c| (c == b'#') as u8)).collect();
+        let data: Vec<u8> = lines
+            .flat_map(|l| {
+                l.bytes()
+                    .chain(iter::repeat(b'.'))
+                    .take(width)
+                    .map(|c| (c == b'#') as u8)
+            })
+            .collect();
         let height = data.len() / width;
-        
-        Ok(Map { data, width, height })
+
+        Ok(Map {
+            data,
+            width,
+            height,
+        })
     }
 }
 
@@ -55,7 +59,7 @@ pub fn day02_part1(map: &Map) -> usize {
 }
 
 #[aoc(day03, part2)]
-pub fn  day02_part2(map: &Map) -> usize {
+pub fn day02_part2(map: &Map) -> usize {
     const SLOPES: [(usize, usize); 5] = [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)];
 
     SLOPES.iter().map(|&(x, y)| map.count_trees(x, y)).product()
