@@ -23,9 +23,7 @@ pub fn day06_part2(input: &str) -> usize {
 
             lines
                 .fold(map, |map, l| {
-                    map.intersection(&l.chars().collect())
-                        .copied()
-                        .collect()
+                    map.intersection(&l.chars().collect()).copied().collect()
                 })
                 .len()
         })
