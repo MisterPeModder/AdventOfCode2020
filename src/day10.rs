@@ -24,21 +24,24 @@ pub fn day10_part2(input: &str) -> u64 {
     let mut adapters: Vec<u32> = input
         .lines()
         .filter_map(|l| l.parse().ok())
-        .chain(iter::once(0))
         .collect();
-    let mut ways: HashMap<u32, u64> = HashMap::new();
-    let last;
-
     adapters.sort_unstable();
-    last = *adapters.last().unwrap();
-    ways.insert(0, 1);
-    for n in adapters.into_iter().skip(1) {
-        ways.insert(
-            n,
-            ways.get(&(n - 1)).copied().unwrap_or_default()
-                + ways.get(&(n - 2)).copied().unwrap_or_default()
-                + ways.get(&(n - 3)).copied().unwrap_or_default(),
-        );
+
+    let last = *adapters.last().unwrap();
+    let mut ways: Vec<u64> = iter::repeat(0).take(last as usize + 1).collect();
+    let mut adapters = adapters.into_iter().peekable();
+
+    ways[0] = 1;
+    if let Some(1) = adapters.peek().copied() {
+        ways[1] = ways[0];
+        adapters.next();
+        if let Some(2) = adapters.peek().copied() {
+            ways[2] = ways[1] + ways[0];
+            adapters.next();
+        }
     }
-    ways[&last]
+    for n in adapters {
+        ways[n as usize] = ways[n as usize - 1] + ways[n as usize - 2] + ways[n as usize - 3];
+    }
+    ways[last as usize]
 }
