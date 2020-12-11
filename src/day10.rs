@@ -1,4 +1,4 @@
-use std::{collections::HashMap, iter};
+use std::iter;
 
 #[aoc(day10, part1)]
 pub fn day10_part1(input: &str) -> u32 {
@@ -21,10 +21,7 @@ pub fn day10_part1(input: &str) -> u32 {
 
 #[aoc(day10, part2)]
 pub fn day10_part2(input: &str) -> u64 {
-    let mut adapters: Vec<u32> = input
-        .lines()
-        .filter_map(|l| l.parse().ok())
-        .collect();
+    let mut adapters: Vec<u32> = input.lines().filter_map(|l| l.parse().ok()).collect();
     adapters.sort_unstable();
 
     let last = *adapters.last().unwrap();
