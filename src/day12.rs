@@ -42,7 +42,8 @@ pub fn day12_part1(input: &[(char, i32)]) -> u32 {
 
 #[aoc(day12, part2)]
 pub fn day12_part2(input: &[(char, i32)]) -> u32 {
-    const ROTATIONS: [fn((i32, i32)) -> (i32, i32); 4] = [
+    type Rotation = fn((i32, i32)) -> (i32, i32);
+    const ROTATIONS: [Rotation; 4] = [
         |(x, y)| (x, y),
         |(x, y)| (y, -x),
         |(x, y)| (-x, -y),
