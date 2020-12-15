@@ -19,7 +19,7 @@ pub fn day14_part1(input: &str) -> u64 {
                     b'0' => {
                         positive <<= 1;
                         negative <<= 1;
-                    },
+                    }
                     b'1' => {
                         positive = (positive << 1) | 1;
                         negative = (negative << 1) | 1;
